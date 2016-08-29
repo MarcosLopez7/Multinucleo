@@ -1,19 +1,18 @@
-//
-// Created by marcoslopez7 on 26/08/16.
-//
+/*
+	A01020023 Marcos López
+*/
 
-#include <omp.h>
 #include <stdio.h>
-#include <time.h>
 #include <cstdlib>
+#include <time.h>
 
-#define N 100000000
+#define N 500000000
 
-void fillArray(int *);
 void sumArray(int *, int *, int *);
+void fillArray(int *);
 void printArray(int *);
 
-int main(){
+int main() {
 
     double total_t, total_c;
     clock_t start_t, end_c, end_t;
@@ -29,10 +28,11 @@ int main(){
     sumArray(arrayA, arrayB, result);
     end_c = clock();
 
-    printArray(result);
-
     total_c = (double) (end_c - start_t) / (CLOCKS_PER_SEC / 1000);
-    printf("Tiempo total de la suma: %f milisegundos\n", total_c);
+
+//   printArray(result);
+
+    printf("Tiempo del calculo de la suma: %f milisegundos\n", total_c);
 
     free(arrayA);
     free(arrayB);
@@ -58,10 +58,16 @@ void fillArray(int *array){
 
 void sumArray(int *arrA, int *arrB, int *result) {
 
-    #pragma omp parallel for
-    for (int i = 0; i < N; ++i)
-    {
-        result[i] = arrA[i] + arrB[i];
+    int i;
+    int *a = arrA;
+    int *b = arrB;
+    int *r = result;
+
+    for (i = 0; i < N; ++i) {
+        *r = *a + *b;
+        r++;
+        a++;
+        b++;
     }
 
 }
